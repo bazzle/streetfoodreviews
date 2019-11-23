@@ -1,0 +1,502 @@
+// html ================================================
+
+html {
+  font-family: $font-std;
+  font-size:$font-size-base;
+}
+
+// body
+body {
+  font-size:$font-size-mobile;
+  @include break(small) {
+    font-size:$font-size-std;
+  }
+  line-height:$line-height;
+  color:$black;
+  background-color:$body-bg;
+}
+
+
+// HEADER ====================================================================================================
+
+.header{
+  position:fixed;
+  height:$header-height-mobile;
+  @include break(small) {
+      height:$header-height;
+  }
+}
+
+// main
+.main{
+  position:relative;
+  padding-top:$header-height-mobile;
+  @include break(small) {
+      padding-top:$header-height;
+  }
+}
+
+
+// ANIMATION ====================================================================================================
+
+// fancy transitions
+$move-whip: cubic-bezier(0.8, 0, 0.3, 1);
+$move-snap: cubic-bezier(0.7, -0.5, 0.3, 1.5);
+$move-snap-in: cubic-bezier(0.6, -0.3, 0.7, 0);
+$move-snap-out: cubic-bezier(0.2, 0.9, 0.3, 1.3);
+
+@mixin transition($property: all, $speed: .2s, $anim: linear ){
+  transition-property: $property;
+  transition-duration: $speed;
+  transition-timing-function: $anim;
+}
+
+// multiple arguments
+@mixin transitions($speed, $anim, $property... ){
+  transition-property: $property;
+  transition-duration: $speed;
+  transition-timing-function: $anim;
+}
+
+// anchor
+a{
+  @include transition(color, .5s);
+}
+
+// scroll behaviour
+html{
+  scroll-behavior: smooth;
+}
+
+
+// TYPOGRAPHY =================================================================================================
+
+// underline
+@mixin text-underline($color){
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
+    text-decoration-color: $color;
+}
+
+// title standard
+@mixin title($titlelevel, $color:$color-heading){
+  font-family:$font-headings;
+  font-weight:$bold;
+  line-height:$line-height--tight;
+  color:$color;
+  @if map-has-key($titlelevels, $titlelevel) {
+    font-size:calc(#{map-get($titlelevels, $titlelevel)} - 25%);
+    @include break(small) {
+      font-size:map-get($titlelevels, $titlelevel);
+    }
+  }
+}
+
+// title display
+@mixin title-display($titlelevel, $color:$color-heading){
+  font-family:$font-headings;
+  font-weight:$extrabold;
+  color:$color;
+  line-height:$line-height--tight;
+  @if map-has-key($titlelevels--d, $titlelevel) {
+    font-size:map-get($titlelevels--d, $titlelevel);
+  }
+}
+
+// leadin/intro text
+@mixin text-leadin($font-size:2.2rem){
+  font-family:$font-standout;
+  font-weight:$std-bold;
+  font-size:$font-size;
+  line-height: 1.6;
+  p{
+    line-height: 1.6;
+  }
+}
+
+// Quote text
+@mixin text-quote($font-size:2.2rem){
+  font-family:$font-standout;
+  font-weight:$std-bold;
+  font-size:$font-size;
+  line-height: 1.4;
+  p{
+    line-height: 1.4;
+  }
+}
+
+// normal body text
+@mixin text-std{
+  font-size:$font-size-std;
+  font-family:$font-std;
+  line-height:$line-height;
+}
+
+@mixin text-tiny{
+  font-size:$tiny;
+  font-weight:$bold;
+  line-height:1.4;
+}
+
+// text body
+%text-body{
+  font-size:$font-size-std;
+  font-family:$font-std;
+  line-height:$line-height;
+  img{
+    margin-bottom:$text-gap-mobile;
+    @include break(small) {
+      margin-bottom:$text-gap;
+    }
+      
+  }
+  strong{
+    font-weight:$bold;
+  }
+  h1, h2, h3, h4, h5{
+    color:$color-body-heading;
+    padding:0;
+    margin:0;
+    margin-bottom:$text-gap-mobile;
+    @include break(small) {
+      margin-bottom:$text-gap;
+    }
+      
+    font-weight:$bold;
+  }
+  h1, h2, h3{
+    @include title(s3);
+  }
+  h4{
+    @include title(s4);
+  }
+  h5{
+    font-size:inherit;
+    color:inherit;
+  }
+
+  p, ol, ul, .cite, pre{
+    padding:0;
+    margin:0;
+    margin-bottom:$text-gap-mobile;
+    @include break(small) {
+      margin-bottom:$text-gap;
+    }
+      
+    max-width:$content-width;
+  }
+  ul{
+    box-sizing:border-box;
+  }
+  li{
+    width:calc(100% - 1em);
+    list-style:none;
+    position:relative;
+    padding-left:1.5em;
+    &:before{
+      content:'\25A0';
+      color:$color-secondary;
+      position:absolute;
+      left:0;
+      top:0;
+    }
+  }
+  & > *:last-child{
+    margin-bottom:0;
+    padding-bottom:0;
+  }
+  pre{
+    background-color:$white;
+    padding:1em;
+  }
+}
+
+
+
+// LAYOUT AND GRID ====================================================================================================
+
+@mixin text-gap{
+  padding-bottom:$text-gap-mobile;
+  @include break(small) {
+    padding-bottom:$text-gap;
+  }
+}
+
+@mixin text-gap-tight{
+  padding-bottom:$text-gap-mobile;
+  @include break(small) {
+    padding-bottom:$text-gap-tight;
+  }
+}
+
+@mixin panel{
+  width:100vw;
+  @include align-center-top;
+}
+
+
+
+@mixin container{
+  width:calc(100vw - #{$padding-sides}*2);
+  max-width:$site-width;
+  margin:0 $padding-sides;
+}
+@mixin container--fw{
+  width:calc(100vw - #{$padding-sides}*2);
+  margin:0 $padding-sides;
+}
+
+.panel{
+  @include panel;
+  &__container{
+    @include container;
+  }
+  &__container--fw{
+    @include container--fw;
+  }
+}
+
+.container{
+  @include container;
+}
+
+// alignment
+
+@mixin align($yaxis:center, $xaxis:center ) {
+  display:flex;
+  @if $yaxis == top and $xaxis == left {
+    align-items:flex-start;
+    justify-content:flex-start;
+  } @else if $yaxis == top and $xaxis == center {
+    align-items:flex-start;
+    justify-content:center;
+  } @else if $yaxis == top and $xaxis == right {
+    align-items:flex-start;
+    justify-content:flex-end;
+  } @else if $yaxis == center and $xaxis == left {
+    align-items:center;
+    justify-content:flex-start;
+  } @else if $yaxis == center and $xaxis == center {
+    align-items:center;
+    justify-content:center;
+  } @else if $yaxis == center and $xaxis == right {
+    align-items:center;
+    justify-content:flex-end;
+  } @else if $yaxis == bottom and $xaxis == left {
+    align-items:flex-end;
+    justify-content:flex-start;
+  } @else if $yaxis == bottom and $xaxis == center {
+    align-items:flex-end;
+    justify-content:center;
+  } @else if $yaxis == bottom and $xaxis == right {
+    align-items:flex-end;
+    justify-content:flex-end;
+  }
+}
+
+// flexbox grids
+
+@mixin flex($direction: row, $spacing: space-between, $align: flex-start){
+  display:flex;
+  flex-direction:$direction;
+  justify-content:$spacing;
+  align-items:$align;
+}
+
+// grid layouts
+
+@mixin grid($howmanycols: 2, $gap: 1.5rem, $gaprow:1.5rem ) {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-row-gap: $gaprow;
+  grid-column-gap: $gap;
+  @if $howmanycols == 2 {
+    grid-template-columns: 1fr 1fr;
+  } @else if $howmanycols == 3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  } @else if $howmanycols == 4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  } @else if $howmanycols == 1-3 {
+    grid-template-columns: 1fr 2fr;
+  } @else if $howmanycols == 2-3 {
+    grid-template-columns: 2fr 1fr;
+  } @else if $howmanycols == 1-4 {
+    grid-template-columns: 1fr 3fr;
+  } @else if $howmanycols == 2-4 {
+    grid-template-columns: 2fr 2fr;
+  } @else if $howmanycols == 3-4 {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+// grid classes
+
+.grid{
+  &--2{
+    @include break(small) {
+      @include grid(2, 3rem);
+    }
+    &--medium{
+      @include break(medium) {
+        @include grid(2, 3rem);
+      }
+    }
+    &--large{
+      @include break(medium) {
+        @include grid(2, 3rem);
+      }
+    }
+  }
+  &--3{
+    @include break(small) {
+      @include grid(3, 3rem);
+    }
+  }
+  &--4{
+    @include break(small) {
+      @include grid(4, 3rem);
+    }
+  }
+  &--1-3{
+    @include break(small) {
+      @include grid(1-3, 3rem);
+    }
+  }
+  &--2-3{
+    @include break(small) {
+      @include grid(2-3, 3rem);
+    }
+  }
+}
+
+.grid-tight{
+  &--2{
+    @include break(small) {
+      @include grid(2, 1.5rem);
+    }
+  }
+  &--3{
+    @include break(small) {
+      @include grid(3, 1.5rem);
+    }
+  }
+}
+
+
+
+
+// GLOBAL MIXINS AND INCLUDES =====================================================================================
+
+// tagline
+.tagline, %tagline{
+  color:$color-tagline;
+  text-transform:uppercase;
+  display:block;
+  font-size:.8em;
+}
+
+@mixin bgimage($filename, $ext){
+  background-image:url('#{$path-images}/#{$filename}.#{$ext}');
+  background-repeat:no-repeat;
+}
+
+
+// GLOBAL ELEMENTS AND CLASSES =====================================================================================
+
+// hidden/visible
+.hidden{
+  visibility:hidden;
+  opacity:0;
+  height:0;
+}
+.visible{
+  visibility:visible;
+  opacity:1;
+}
+
+p, ul, ol{
+  padding:0;
+  margin:0;
+  line-height:$line-height;
+  list-style:none;
+}
+
+// lists
+ul{
+  li{
+    margin-bottom:1em;
+    @include break(small) {
+      margin-bottom:.5em;
+    }
+  }
+}
+
+// anchor
+a{
+  text-decoration: none;
+  color:$color-primary;
+}
+
+// syled links
+
+@mixin link-styled($color:$black, $border-color:$color-secondary, $hover-color:$color-primary ){
+  font-family:$font-standout;
+  font-weight:$bold;
+  color:$color;
+  border-bottom:.1em solid $border-color;
+  display:inline-block;
+  &:hover{
+    color:$hover-color;
+  }
+}
+
+// Double border
+
+@mixin double-border($top, $bottom){
+  border-bottom:1px solid $top;
+  position:relative;
+    &:after{
+      content:'';
+      width:100%;
+      height:1px;
+      background-color:$bottom;
+      display:block;
+      position:absolute;
+      bottom:0;
+      left:0;
+    }
+}
+
+// text highlight
+::selection {
+  background:$color-accent;
+}
+
+// icons
+.icon{
+  use{
+  }
+}
+
+// screen reader only
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+// text no break
+.nobreak{
+  white-space: nowrap;
+}
+
+// images
+
+img{
+  border-radius: $border-radius;
+}
