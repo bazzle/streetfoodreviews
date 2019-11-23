@@ -1,0 +1,28 @@
+# Don't track content of these folders
+node_modules/
+dist/
+css/input/*
+.sass-cache/
+# Don't track any of these files
+.scss
+.sass-cache
+.package-lock.json
+.lock
+*.css
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.psd
+*.sketch
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.map
